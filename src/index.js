@@ -1,7 +1,5 @@
-import burger from './modules/burger';
-import sliderOne from './modules/slider';
-import sliderTwo from './modules/badScript';
+import one from './modules/one';
+import two from './modules/two';
 
-burger();
-sliderOne();
-sliderTwo();
+one();
+two();

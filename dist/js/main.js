@@ -1,1 +1,1 @@
-(()=>{"use strict";console.log("my menu"),console.log("my slider component"),console.log("my slider component")})();
+(()=>{"use strict";console.log("Message from first file"),console.log("Message from second file")})();
