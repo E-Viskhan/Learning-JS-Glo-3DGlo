@@ -18,7 +18,7 @@ const modal = () => {
       idAnimate = requestAnimationFrame(modalAnimate);
       modal.style.opacity = valueForAnimate;
       modalContent.style.transform = `scale(${valueForAnimate})`;
-      valueForAnimate += 0.02;
+      valueForAnimate += 0.08;
     }
   };
 
