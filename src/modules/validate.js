@@ -2,7 +2,6 @@ const validate = () => {
   const allInputs = document.querySelectorAll('input');
   const calcInputs = document.querySelectorAll('.calc-block input[type=text]');
   const telInputs = document.querySelectorAll('input[type=tel]');
-  const messageInputs = document.querySelectorAll('input[type=text][placeholder="Ваше сообщение"]');
   const emailInputs = document.querySelectorAll('input[type=email]');
   const textInputs = document.querySelectorAll('input[type=text]');
 
@@ -16,7 +15,7 @@ const validate = () => {
 
   inputsValidate(calcInputs, /[^\d]/gi);
   inputsValidate(telInputs, /[^\d\(\)\-]/gi);
-  inputsValidate(messageInputs, /[^а-я\-\s]/gi);
+  inputsValidate(textInputs, /[^а-я\-\s]/gi);
   inputsValidate(emailInputs, /[^\w\@\-\.\!\~\*\']/gi);
 
   allInputs.forEach(input => {
