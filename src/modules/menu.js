@@ -1,15 +1,10 @@
 const menu = () => {
-
-  const menuBtn = document.querySelector('.menu');
   const menu = document.querySelector('menu');
-  const closeBtn = menu.querySelector('.close-btn');
-  const menuItems = menu.querySelectorAll('ul>li>a');
-  const nextSlideBtn = document.querySelector('[href="#service-block"]');
 
   const handleMenu = () => menu.classList.toggle('active-menu');
 
-  const smoothScroll = (link, event) => {
-    event.preventDefault();
+  const smoothScroll = (link, e) => {
+    e.preventDefault();
 
     const href = link.getAttribute('href').substring(1);
     const targetElement = document.getElementById(href);
@@ -21,13 +16,21 @@ const menu = () => {
     });
   };
 
-  menuBtn.addEventListener('click', handleMenu);
-  closeBtn.addEventListener('click', handleMenu);
-  menuItems.forEach(menuItem => menuItem.addEventListener('click', (event) => {
-    handleMenu();
-    smoothScroll(menuItem, event);
-  }));
-  nextSlideBtn.addEventListener('click', (event) => smoothScroll(nextSlideBtn, event));
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.menu')) {
+      handleMenu();
+    } else if (e.target.classList.contains('close-btn')) {
+      handleMenu();
+    } else if (e.target.matches('menu.active-menu a')) {
+      handleMenu();
+      smoothScroll(e.target, e);
+    } else if (menu.classList.contains('active-menu') && !e.target.closest('.active-menu')) {
+      handleMenu();
+    } else if (e.target.closest('a[href="#service-block"]')) {
+      const nextSlideBtn = e.target.closest('a[href="#service-block"]');
+      smoothScroll(nextSlideBtn, e);
+    }
+  });
 
 };
 
