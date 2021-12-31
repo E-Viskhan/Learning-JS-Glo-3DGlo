@@ -4,7 +4,7 @@ import modal from './modules/modal';
 import validate from './modules/validate';
 import tabs from './modules/tabs';
 
-timer('31 december 2021');
+timer('3 january 2022');
 menu();
 modal();
 validate();
