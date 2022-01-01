@@ -3,7 +3,7 @@ const validate = () => {
   const calcInputs = document.querySelectorAll('.calc-block input[type=text]');
   const telInputs = document.querySelectorAll('input[type=tel]');
   const emailInputs = document.querySelectorAll('input[type=email]');
-  const textInputs = document.querySelectorAll('input[type=text]');
+  const textInputs = document.querySelectorAll('input[type=text]:not(.calc-item)');
 
   const inputsValidate = (inputs, pattern) => {
     inputs.forEach(input => {
@@ -33,6 +33,7 @@ const validate = () => {
       e.target.value = e.target.value.replace(/\S+/gi, match => match[0].toUpperCase() + match.substr(1).toLowerCase());
     });
   });
+
 };
 
 export default validate;
