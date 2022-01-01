@@ -20,6 +20,7 @@ const menu = () => {
     if (e.target.closest('.menu')) {
       handleMenu();
     } else if (e.target.classList.contains('close-btn')) {
+      e.preventDefault();
       handleMenu();
     } else if (e.target.matches('menu.active-menu a')) {
       handleMenu();
