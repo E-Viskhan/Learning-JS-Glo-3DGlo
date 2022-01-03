@@ -11,5 +11,16 @@ menu();
 modal();
 validate();
 tabs();
-slider();
+slider({
+  sliderClass: 'portfolio-content',
+  slideClass: 'portfolio-item',
+  slideActiveClass: 'portfolio-item-active',
+  dotsClass: 'portfolio-dots',
+  dotClass: 'dot',
+  dotActiveClass: 'dot-active',
+  arrowsCommonClass: 'portfolio-btn',
+  arrowPrevClass: 'prev',
+  arrowNextClass: 'next',
+  slideTime: 2000
+});
 calc(100);
