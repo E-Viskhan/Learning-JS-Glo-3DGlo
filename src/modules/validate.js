@@ -1,63 +1,61 @@
 const validate = () => {
   const forms = document.querySelectorAll('form');
+  const calcBlock = document.querySelector('.calc-block');
+  const nameInputs = document.querySelectorAll('input[name="user_name"]');
+  const emailInputs = document.querySelectorAll('input[name="user_email"]');
+  const phoneInputs = document.querySelectorAll('input[name="user_phone"]');
 
-  const validateInput = (e, regexp) => {
-    if (e.target.value.match(regexp)) {
-      e.target.classList.add('validation-error');
+  const inputReplacer = (input, pattern) => {
+    input.value = input.value.replace(pattern, '');
+  };
+
+  const validateWithRegExp = (input, regexp) => {
+    if (input.value.match(regexp)) {
+      input.classList.add('validation-error');
     } else {
-      e.target.classList.remove('validation-error');
+      input.classList.remove('validation-error');
+    }
+  };
+
+  const validateLength = (input, minLength = 0, maxLength = Infinity) => {
+
+    if (input.value.length < minLength || input.value.length > maxLength) {
+      input.classList.add('validation-error');
+    } else {
+      input.classList.remove('validation-error');
     }
   };
 
   forms.forEach(form => {
     form.addEventListener('input', (e) => {
-      if (e.target.name === 'user_phone') {
-        validateInput(e, /[^\d\(\)\-\+]/gi);
-      } else if (e.target.name === 'user_name') {
-        validateInput(e, /[^а-я\s]/gi);
-      } else if (e.target.name === 'user_message') {
-        validateInput(e, /[^\\а-я\s\d\.\,\!\?\:\-\+\*\=\;\'\"\@\(\)]/gi);
+      let input = e.target;
+
+      if (input.name === 'user_phone') {
+        validateWithRegExp(input, /[^\d\(\)\-\+]/gi);
+      } else if (input.name === 'user_name') {
+        validateWithRegExp(input, /[^а-я\s]/gi);
+      } else if (input.name === 'user_message') {
+        validateWithRegExp(input, /[^\\а-я\s\d\.\,\!\?\:\-\+\*\=\;\'\"\@\(\)]/gi);
       }
     });
   });
 
-  // Код выше и ниже где-то повторяют функционал друг друга, если раскоментировать код выше,
-  // нужно закоментировать код ниже, и наоборот.
+  calcBlock.addEventListener('input', (e) => {
+    if (e.target.type === 'text') { inputReplacer(e.target, /[^\d]/gi); }
+  });
 
-  // const allInputs = document.querySelectorAll('input');
-  // const calcInputs = document.querySelectorAll('.calc-block input[type=text]');
-  // const telInputs = document.querySelectorAll('input[type=tel]');
-  // const emailInputs = document.querySelectorAll('input[type=email]');
-  // const textInputs = document.querySelectorAll('input[type=text]:not(.calc-item)');
+  nameInputs.forEach(nameInput => {
+    nameInput.addEventListener('blur', () => validateLength(nameInput, 2));
+  });
 
-  // const inputsValidate = (inputs, pattern) => {
-  //   inputs.forEach(input => {
-  //     input.addEventListener('input', e => {
-  //       e.target.value = e.target.value.replace(pattern, '');
-  //     });
-  //   });
-  // };
+  emailInputs.forEach(emailInput => {
+    emailInput.addEventListener('blur', () => validateLength(emailInput, 1));
+  });
 
-  // inputsValidate(calcInputs, /[^\d]/gi);
-  // inputsValidate(telInputs, /[^\d\(\)\-\+]/gi);
-  // inputsValidate(textInputs, /[^а-я\-\s]/gi);
-  // inputsValidate(emailInputs, /[^\w\@\-\.\!\~\*\']/gi);
-
-  // allInputs.forEach(input => {
-  //   input.addEventListener('blur', e => {
-  //     e.target.value = e.target.value
-  //       .replace(/^[\s\-]+/gi, '')
-  //       .replace(/[\s\-]+$/gi, '')
-  //       .replace(/\s{2,}/gi, ' ')
-  //       .replace(/\-{2,}/gi, '-');
-  //   });
-  // });
-
-  // textInputs.forEach(input => {
-  //   input.addEventListener('blur', e => {
-  //     e.target.value = e.target.value.replace(/\S+/gi, match => match[0].toUpperCase() + match.substr(1).toLowerCase());
-  //   });
-  // });
+  phoneInputs.forEach(phoneInput => {
+    phoneInput.addEventListener('blur', () => validateLength(phoneInput, 7, 11));
+    phoneInput.addEventListener('input', (e) => inputReplacer(e.target, /[^\d]/gi));
+  });
 
 };
 
