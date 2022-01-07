@@ -1,7 +1,8 @@
 const sendForm = ({ formId, someElem = [] }) => {
   const form = document.getElementById(formId);
-  const statusBlock = document.createElement('div');
-  const loadText = 'Отправка данных...';
+  let statusBlock = document.createElement('div');
+  statusBlock.className = 'status-block';
+  const loadAnimation = document.querySelector('.sk-chase').cloneNode(true);
   const errorText = 'Ошибка...';
   const succsessText = 'Спасибо! Наш менеджер с вами свяжется!';
 
@@ -32,7 +33,9 @@ const sendForm = ({ formId, someElem = [] }) => {
     const formBody = {};
     const formElements = form.querySelectorAll('input');
 
-    statusBlock.textContent = loadText;
+    loadAnimation.classList.remove('d-none');
+    statusBlock.textContent = '';
+    statusBlock.insertAdjacentElement('beforeend', loadAnimation);
 
     form.append(statusBlock);
 
