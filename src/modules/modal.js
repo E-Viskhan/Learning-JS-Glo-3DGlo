@@ -1,4 +1,4 @@
-import { animate } from "./helpers";
+import { animate, blockBody, unblockBody } from "./helpers";
 
 const modal = () => {
   const buttons = document.querySelectorAll('.popup-btn');
@@ -6,6 +6,7 @@ const modal = () => {
   const modalContent = modal.querySelector('.popup-content');
 
   const showModal = () => {
+    blockBody();
     modal.style.display = 'block';
     if (window.screen.width > 768) {
       animate({
@@ -25,6 +26,7 @@ const modal = () => {
   };
 
   const closeModal = () => {
+    unblockBody();
     if (window.screen.width > 768) {
       animate({
         duration: 300,
@@ -46,6 +48,12 @@ const modal = () => {
 
   modal.addEventListener('click', (e) => {
     if (!e.target.closest('.popup-content') || e.target.classList.contains('popup-close')) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
       closeModal();
     }
   });
