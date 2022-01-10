@@ -27,7 +27,9 @@ const menu = () => {
       smoothScroll(e.target, e);
     } else if (menu.classList.contains('active-menu') && !e.target.closest('.active-menu')) {
       handleMenu();
-    } else if (e.target.closest('a[href="#service-block"]')) {
+    }
+
+    if (e.target.closest('a[href="#service-block"]')) {
       const nextSlideBtn = e.target.closest('a[href="#service-block"]');
       smoothScroll(nextSlideBtn, e);
     }

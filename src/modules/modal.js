@@ -7,30 +7,39 @@ const modal = () => {
 
   const showModal = () => {
     modal.style.display = 'block';
-    animate({
-      duration: 300,
-      timing(timeFraction) {
-        return timeFraction;
-      },
-      draw(progress) {
-        modalContent.style.transform = `scale(${progress})`;
-        modal.style.opacity = progress;
-      }
-    });
+    if (window.screen.width > 768) {
+      animate({
+        duration: 300,
+        timing(timeFraction) {
+          return timeFraction;
+        },
+        draw(progress) {
+          modalContent.style.transform = `scale(${progress})`;
+          modal.style.opacity = progress;
+        }
+      });
+    } else {
+      modalContent.style.transform = 'scale(1)';
+      modal.style.opacity = 1;
+    }
   };
 
   const closeModal = () => {
-    animate({
-      duration: 300,
-      timing(timeFraction) {
-        return timeFraction;
-      },
-      draw(progress) {
-        modalContent.style.transform = `scale(${1 - progress})`;
-        modal.style.opacity = 1 - progress;
-      }
-    });
-    setTimeout(() => modal.style.display = 'none', 300);
+    if (window.screen.width > 768) {
+      animate({
+        duration: 300,
+        timing(timeFraction) {
+          return timeFraction;
+        },
+        draw(progress) {
+          modalContent.style.transform = `scale(${1 - progress})`;
+          modal.style.opacity = 1 - progress;
+        }
+      });
+      setTimeout(() => modal.style.display = 'none', 300);
+    } else {
+      modal.style.display = 'none';
+    }
   };
 
   buttons.forEach(button => button.addEventListener('click', showModal));
