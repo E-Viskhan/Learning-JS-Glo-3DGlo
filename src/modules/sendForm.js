@@ -3,15 +3,55 @@ const sendForm = ({ formId, someElem = [] }) => {
   let statusBlock = document.createElement('div');
   statusBlock.className = 'status-block';
   const loadAnimation = document.querySelector('.sk-chase').cloneNode(true);
-  const errorText = 'Ошибка...';
+  let errorText = 'Ошибка...';
   const succsessText = 'Спасибо! Наш менеджер с вами свяжется!';
 
-  const validate = (list) => {
-    let success = true;
+  const validate = (formInputs) => {
+    const redBorder = (elem) => {
+      elem.style.border = '2px solid red';
+      setTimeout(() => elem.style.border = '', 3000);
+    };
 
-    list.forEach(input => {
-      if (input.classList.contains('validation-error')) {
-        success = false;
+    let success = true;
+    errorText = 'Ошибка...';
+
+    formInputs.forEach(input => {
+      const type = input.name;
+      const value = input.value;
+      let isEmpty = value === '';
+
+      switch (type) {
+        case 'user_email':
+          if (isEmpty) {
+            success = false;
+            redBorder(input);
+            errorText += '<br>' + 'Не заполнен Email!';
+          }
+          break;
+        case 'user_message':
+          if (isEmpty) {
+            success = false;
+            redBorder(input);
+            errorText += '<br>' + 'Не заполнено поле сообщение!';
+          }
+          break;
+        case 'user_name':
+          if (value.length < 2) {
+            success = false;
+            redBorder(input);
+            errorText += '<br>' + 'В имени должно быть от 2 букв!';
+          }
+          break;
+        case 'user_phone':
+          if (value.length < 6) {
+            success = false;
+            redBorder(input);
+            errorText += '<br>' + 'Слишком короткий номер!';
+          } else if (value.length > 12) {
+            success = false;
+            redBorder(input);
+            errorText += '<br>' + 'Слишком длинный номер!';
+          }
       }
     });
 
@@ -34,7 +74,7 @@ const sendForm = ({ formId, someElem = [] }) => {
     const formElements = form.querySelectorAll('input');
 
     loadAnimation.classList.remove('d-none');
-    statusBlock.textContent = '';
+    statusBlock.innerHTML = '';
     statusBlock.insertAdjacentElement('beforeend', loadAnimation);
 
     form.append(statusBlock);
@@ -53,7 +93,7 @@ const sendForm = ({ formId, someElem = [] }) => {
     if (validate(formElements)) {
       sendData(formBody)
         .then(() => {
-          statusBlock.textContent = succsessText;
+          statusBlock.innerHTML = succsessText;
 
           formElements.forEach(input => {
             input.value = '';
@@ -61,12 +101,11 @@ const sendForm = ({ formId, someElem = [] }) => {
           });
         })
         .catch(error => {
-          statusBlock.textContent = errorText;
+          statusBlock.innerHTML = errorText;
           console.error(error);
         });
     } else {
-      statusBlock.textContent = errorText;
-      alert('Данные заполнены неверно!!!');
+      statusBlock.innerHTML = errorText;
     }
   };
 

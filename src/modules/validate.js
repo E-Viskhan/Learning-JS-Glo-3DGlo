@@ -1,62 +1,49 @@
 const validate = () => {
-  const forms = document.querySelectorAll('form');
-  const calcBlock = document.querySelector('.calc-block');
+  const allInputs = document.querySelectorAll('input');
+  const calcInputs = document.querySelectorAll('.calc-block input[type=text]');
+  const telInputs = document.querySelectorAll('input[type=tel]');
   const nameInputs = document.querySelectorAll('input[name="user_name"]');
-  const emailInputs = document.querySelectorAll('input[name="user_email"]');
-  const phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+  const messageInputs = document.querySelectorAll('input[name="user_message"]');
+  const emailInputs = document.querySelectorAll('input[type=email]');
 
-  const inputReplacer = (input, pattern) => {
-    input.value = input.value.replace(pattern, '');
+  const inputsValidate = (inputs, pattern) => {
+    inputs.forEach(input => {
+      input.addEventListener('input', e => {
+        e.target.value = e.target.value.replace(pattern, '');
+      });
+    });
   };
 
-  const validateWithRegExp = (input, regexp) => {
-    if (input.value.match(regexp)) {
-      input.classList.add('validation-error');
-    } else {
-      input.classList.remove('validation-error');
-    }
-  };
-
-  const validateLength = (input, minLength = 0, maxLength = Infinity) => {
-
-    if (input.value.length < minLength || input.value.length > maxLength) {
-      input.classList.add('validation-error');
-    } else {
-      input.classList.remove('validation-error');
-    }
-  };
-
-  forms.forEach(form => {
-    form.addEventListener('input', (e) => {
-      let input = e.target;
-
-      if (input.name === 'user_phone') {
-        validateWithRegExp(input, /[^\d\(\)\-\+]/gi);
-      } else if (input.name === 'user_name') {
-        validateWithRegExp(input, /[^а-я\s]/gi);
-      } else if (input.name === 'user_message') {
-        validateWithRegExp(input, /[^\\а-я\s\d\.\,\!\?\:\-\+\*\=\;\'\"\@\(\)]/gi);
-      }
+  allInputs.forEach(input => {
+    input.addEventListener('blur', e => {
+      e.target.value = e.target.value
+        .trim()
+        .replace(/\s{2,}/gi, ' ')
+        .replace(/\-{2,}/gi, '-');
     });
   });
 
-  calcBlock.addEventListener('input', (e) => {
-    if (e.target.type === 'text') { inputReplacer(e.target, /[^\d]/gi); }
+  inputsValidate(calcInputs, /[^\d]/gi);
+  inputsValidate(telInputs, /[^\d\(\)\-\+]/gi);
+  inputsValidate(emailInputs, /[^\w\@\-\.\!\~\*\']/gi);
+  inputsValidate(nameInputs, /[^а-я\s]/gi);
+  inputsValidate(messageInputs, /[^а-я\s\d\.\,\!\?\:\;\"\'\*]/gi);
+
+  messageInputs.forEach(input => {
+    input.addEventListener('blur', () => {
+      input.value = input.value
+        .replace(/^\S+\s/gi, match => {
+          return match[0].toUpperCase() + match.substr(1).toLowerCase();
+        });
+    });
   });
 
-  nameInputs.forEach(nameInput => {
-    nameInput.addEventListener('blur', () => validateLength(nameInput, 2));
+  nameInputs.forEach(input => {
+    input.addEventListener('blur', () => {
+      input.value = input.value
+        .replace(/\S+/gi, match => match[0].toUpperCase() + match.substr(1).toLowerCase());
+    });
   });
-
-  emailInputs.forEach(emailInput => {
-    emailInput.addEventListener('blur', () => validateLength(emailInput, 1));
-  });
-
-  phoneInputs.forEach(phoneInput => {
-    phoneInput.addEventListener('blur', () => validateLength(phoneInput, 7, 11));
-    phoneInput.addEventListener('input', (e) => inputReplacer(e.target, /[^\d]/gi));
-  });
-
 };
 
 export default validate;
