@@ -1,4 +1,4 @@
-import { animateValue } from "./helpers";
+import { animate, animateValue } from "./helpers";
 
 const calc = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block');
@@ -34,8 +34,15 @@ const calc = (price = 100) => {
     } else {
       totalValue = 0;
     }
-
-    animateValue(total, lastTotalValue, totalValue, 1000);
+    animate({
+      duration: 1000,
+      timing(timeFraction) {
+        return timeFraction;
+      },
+      draw(progress) {
+        total.textContent = Math.ceil(lastTotalValue + progress * (totalValue - lastTotalValue));
+      }
+    });
   };
 
   calcBlock.addEventListener('input', (e) => {
