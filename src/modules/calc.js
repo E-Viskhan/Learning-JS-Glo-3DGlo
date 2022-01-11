@@ -1,3 +1,5 @@
+import { animateValue } from "./helpers";
+
 const calc = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block');
   const calcType = document.querySelector('.calc-type');
@@ -9,6 +11,7 @@ const calc = (price = 100) => {
   const countCalc = () => {
     const calcTypeValue = +calcType.value;
     const calcSquareValue = +calcSquare.value;
+    const lastTotalValue = +total.textContent;
 
     let totalValue = 0;
     let calcCountValue = 1;
@@ -32,7 +35,7 @@ const calc = (price = 100) => {
       totalValue = 0;
     }
 
-    total.textContent = totalValue;
+    animateValue(total, lastTotalValue, totalValue, 1000);
   };
 
   calcBlock.addEventListener('input', (e) => {
